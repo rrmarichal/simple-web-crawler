@@ -1,0 +1,19 @@
+.DS_Store
+
+# Client node modules
+**/node_modules/
+
+# Visual Studio Code
+.vscode/
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+build/
+[Bb]in/
+[Oo]bj/
+[Oo]ut/
