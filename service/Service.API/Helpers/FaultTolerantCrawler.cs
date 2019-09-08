@@ -7,7 +7,7 @@ namespace CrawlerService.Helpers {
 	/// <summary>
 	/// Crawler implementation that uses a DFS approach with recovery/retries/state management.
 	/// </summary>
-	public class FaultTolerantCrawler : ICrawler {
+	public class FaultTolerantCrawler : ICrawlerStrategy {
 
 		private readonly ILogger<CrawlController> logger;
 		private readonly IContentProvider provider;

@@ -8,29 +8,47 @@ using Microsoft.Extensions.Logging;
 
 namespace CrawlerService.Controllers {
 
+	/// <summary>
+	/// Controller implementation for crawler services.
+	/// </summary>
 	[Route("api/crawl")]
 	[ApiController]
+	[Produces("application/json")]
 	public class CrawlController : ControllerBase {
 		
 		private readonly IConfiguration configuration;
 		private readonly ILogger<CrawlController> logger;
+		private readonly ICrawlerStrategy crawler;
 
-		public CrawlController(IConfiguration configuration, ILogger<CrawlController> logger) {
+		/// <summary>
+		/// Initializes a new instance of CrawlController with default (injected) dependencies.
+		/// </summary>
+		public CrawlController(
+			IConfiguration configuration,
+			ILogger<CrawlController> logger,
+			ICrawlerStrategy crawler)
+		{
 			this.configuration = configuration;
 			this.logger = logger;
+			this.crawler = crawler;
 		}
 
 		/// <summary>
-		/// POST /?url=[url]&max-depth=[max-depth]
-		/// <code>url</code> query parameter is mandatory, the others are optional.
+		/// Start a crawling task with specific url and depth parameters.
 		/// </summary>
+		/// <remarks>
+		/// 
+		/// POST /api/crawl?url=[url]&amp;max-depth=[max-depth]
+		/// 
+		/// max-depth query parameter is optional.
+		/// 
+		/// </remarks>
+		/// <response code="200">CrawlResult object containing the sitemap.</response>
 		[HttpPost]
+		[ProducesResponseType(200)]
 		public ActionResult<CrawlingResult> Post() {
 			try {
 				var taskInfo = GetTaskInfo();
-				var timeout = int.Parse(configuration["Timeout"]);
-				// var crawler = new BFSCrawler(logger, new WebContentProvider(timeout));
-				var crawler = new DFSCrawler(logger, new WebContentProvider(timeout));
 				return crawler.Crawl(taskInfo);
 			}
 			catch (Exception e) {

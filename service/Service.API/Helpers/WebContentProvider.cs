@@ -1,5 +1,6 @@
 using System.Net;
 using System.IO;
+using Microsoft.Extensions.Configuration;
 
 namespace CrawlerService.Helpers {
 
@@ -10,8 +11,8 @@ namespace CrawlerService.Helpers {
 
 		private int timeout;
 
-		public WebContentProvider(int timeout) {
-			this.timeout = timeout;
+		public WebContentProvider(IConfiguration configuration) {
+			this.timeout = configuration.GetValue<int>("Timeout");
 		}
 
 		public string GetHtmlContent(string url) {

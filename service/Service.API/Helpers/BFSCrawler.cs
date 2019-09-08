@@ -10,7 +10,7 @@ namespace CrawlerService.Helpers {
 	/// <summary>
 	/// Crawler implementation using a breath first search expansion from the source URL.
 	/// </summary>
-	public class BFSCrawler : ICrawler {
+	public class BFSCrawler : ICrawlerStrategy {
 
 		private readonly ILogger<CrawlController> logger;
 		private readonly IContentProvider provider;

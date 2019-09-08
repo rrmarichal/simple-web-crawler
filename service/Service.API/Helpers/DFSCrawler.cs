@@ -11,7 +11,7 @@ namespace CrawlerService.Helpers {
 	/// <summary>
 	/// Crawler implementation using a depth first search expansion from the source URL.
 	/// </summary>
-	public class DFSCrawler : ICrawler {
+	public class DFSCrawler : ICrawlerStrategy {
 
 		private readonly ILogger<CrawlController> logger;
 		private readonly IContentProvider provider;

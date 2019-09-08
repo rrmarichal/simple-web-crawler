@@ -1,5 +1,8 @@
 namespace CrawlerService.Helpers {
 
+	/// <summary>
+	/// Identifies a crawling task information.
+	/// </summary>
 	public class CrawlerTaskInfo {
 
 		public CrawlerTaskInfo(string baseUrl, int maxDepth) {

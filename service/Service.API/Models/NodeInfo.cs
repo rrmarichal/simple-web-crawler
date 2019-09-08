@@ -5,7 +5,7 @@ using CrawlerService.Helpers;
 namespace CrawlerService {
 
 	/// <summary>
-	/// Thread safe implementation for site map node objects.
+	/// Thread safe implementation for sitemap node objects.
 	/// </summary>
 	public class NodeInfo {
 
