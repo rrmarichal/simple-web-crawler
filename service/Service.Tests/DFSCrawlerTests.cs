@@ -1,4 +1,3 @@
-using System;
 using NUnit.Framework;
 using CrawlerService.Helpers;
 using CrawlerService.Controllers;
@@ -38,7 +37,7 @@ namespace CrawlerService.Tests {
 			Assert.IsNotNull(result.Sitemap);
 			Assert.AreEqual(result.Sitemap.Url, "http://www.fiboapp.com/");
 		}
-
+		
 	}
 
 }

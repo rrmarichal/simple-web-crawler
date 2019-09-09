@@ -7,7 +7,7 @@ namespace CrawlerService.Helpers {
 	/// <summary>
 	/// Web request content provider implementation. Supports timeout on tasks execution.
 	/// </summary>
-	public class WebContentProvider : IContentProvider {
+	internal class WebContentProvider : IContentProvider {
 
 		private int timeout;
 
@@ -23,5 +23,5 @@ namespace CrawlerService.Helpers {
 		}
 
 	}
-
+	
 }

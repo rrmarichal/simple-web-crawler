@@ -7,5 +7,5 @@ namespace CrawlerService.Helpers {
 		CrawlingResult Crawl(CrawlerTaskInfo taskInfo);
 
 	}
-
+	
 }

@@ -15,5 +15,5 @@ namespace CrawlerService.Helpers {
 		public int MaxDepth { get; private set; }
 
 	}
-
+	
 }

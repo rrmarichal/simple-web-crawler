@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using CrawlerService.Models;
 using CrawlerService.Helpers;
-using Microsoft.Extensions.Logging;
 
 namespace CrawlerService.Controllers {
 
@@ -15,7 +15,7 @@ namespace CrawlerService.Controllers {
 	[ApiController]
 	[Produces("application/json")]
 	public class CrawlController : ControllerBase {
-		
+
 		private readonly IConfiguration configuration;
 		private readonly ILogger<CrawlController> logger;
 		private readonly ICrawlerStrategy crawler;
@@ -26,8 +26,8 @@ namespace CrawlerService.Controllers {
 		public CrawlController(
 			IConfiguration configuration,
 			ILogger<CrawlController> logger,
-			ICrawlerStrategy crawler)
-		{
+			ICrawlerStrategy crawler
+		) {
 			this.configuration = configuration;
 			this.logger = logger;
 			this.crawler = crawler;
@@ -70,7 +70,7 @@ namespace CrawlerService.Controllers {
 				throw new Exception("Invalid URL query string parameter.");
 			}
 			// Default to MaxDepth configuration value.
-			var maxDepth = int.Parse(configuration["MaxDepth"]);
+			var maxDepth = configuration.GetValue<int>("MaxDepth");
 			int queryMaxDepth;
 			if (queryParams.ContainsKey("max-depth") && int.TryParse(queryParams["max-depth"], out queryMaxDepth)) {
 				maxDepth = queryMaxDepth;
@@ -79,5 +79,5 @@ namespace CrawlerService.Controllers {
 		}
 
 	}
-
+	
 }

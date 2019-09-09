@@ -16,12 +16,23 @@ The crawler service (<code>Service.API</code>) is a .NET Core web API written in
 - POST ~/crawl?url=[url]&max-depth=[max-depth]
 ```
 
-The crawler implementation is inside the <code>BFSCrawler</code> class. This is a breath first search approach, going one level of the tree at the time. At each step we spawn crawl tasks in parallel which will generate nodes for the next step.
+### BFSCrawler
 
-There is also a test project (<code>Service.Tests</code>) which contains:
+Breath first search approach, going one level of the tree at the time. At each step we spawn crawl tasks in parallel which will generate nodes for the next step.
+
+### DFSCrawler
+
+Depth first search approach, going from the root down in the sitemap tree recursively.
+
+### FaultTolerantCrawler
+
+A curated approach to `DFSCrawler` where we account for error and retries. A queue processor implementation maintains a list of processing tasks limited by a maximum concurrenly level parameter. When a node fails to crawl, it is re-queued up to a maximum number of times.
+
+### Unit Tests
+A test project (<code>Service.Tests</code>) contains:
 
 - <code>UtilsTests</code> - Unit tests for the <code>Utils</code> class, which contains helper methods on URL validation, parsing	and transformation.
-- <code>BFSCrawlerTests</code> - Using a mock implementation of the <code>IContentProvider</code> interface, we test basic functionality for the <code>BFSCrawler</code> implementation.
+- <code>BFSCrawlerTests</code>, <code>DFSCrawlerTests</code> and <code>FaultTolerantCrawlerTests</code> - Using a mock implementation of the <code>IContentProvider</code> interface, we test basic functionality for the different crawler strategies implementations.
 
 ## Launch
 
@@ -41,16 +52,10 @@ cd crawler-service && dotnet run --project Service.API
 
 In order to deliver this implementation on a reasonable time, some trade-offs were made. To make it production-ready, some other details should be addressed:
 
-- Thread pool - Concurrency, Parallelism
-
-	The concurrency level is managed by the .NET <code>ThreadPool</code>. For a more deterministic/configurable approach, we should control the level of parallelism.
-
 - Crawler strategy - Fault tolerance
 
-	Independently of the strategies implemented to make the crawling process more resource efficient, scenarios like node crash, network outages, low bandwidth, should be addressed by providing state management and recovery.
+	Independently of the strategies implemented to make the crawling process more resource efficient, scenarios like node crash, network outages, should be addressed by providing state management and recovery.
 
-- Error handling - Errors, Timeouts, Retries, Logs
+- Logs
 
-	Pages may be temporarily unavailable or the phisical network may fail on a high number of requests. Production ready apps may introduce retry mechanisms to enqueue failed requests.
-
-	Errors should be all tracked in a logging system with relevant context information like time, type/description, number of retries, etc.
+	Errors should be all tracked in a logging system with relevant context information like time type/description, number of retries, etc.

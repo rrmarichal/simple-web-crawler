@@ -22,7 +22,7 @@ namespace CrawlerService.Helpers {
 			}
 			return null;
 		}
-		
-	}
 
+	}
+	
 }

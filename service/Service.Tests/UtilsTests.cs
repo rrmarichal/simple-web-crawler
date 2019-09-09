@@ -36,7 +36,26 @@ namespace CrawlerService.Tests {
 		}
 
 		[Test]
-		public void GetUrlsAbsoluteUrlsTest() {
+		public void GetAbsoluteUrisFromHtmlNullContentTest() {
+			var uris = Utils.GetAbsoluteUrisFromHtml(new Uri("https://www.fiboapp.com"), null);
+			Assert.AreEqual(0, uris.Count);
+		}
+
+		[Test]
+		public void GetAbsoluteUrisFromHtmlEmptyContentTest() {
+			var uris = Utils.GetAbsoluteUrisFromHtml(new Uri("https://www.fiboapp.com"), string.Empty);
+			Assert.AreEqual(0, uris.Count);
+		}
+
+		[Test]
+		public void GetAbsoluteUrisFromHtmlNonHtmlTest() {
+			var nonHtml = @"{ ""A"": ""JSON instead"" }";
+			var uris = Utils.GetAbsoluteUrisFromHtml(new Uri("https://www.fiboapp.com"), nonHtml);
+			Assert.AreEqual(0, uris.Count);
+		}
+
+		[Test]
+		public void GetAbsoluteUrisFromHtmlSimpleTest() {
 			var html = 
 				@"<div>
 					<a href=""http://www.google.com?q=fiboapp""> About </a>
@@ -45,11 +64,11 @@ namespace CrawlerService.Tests {
 					</div>
 					<a href=""http://www.bing.com?q=fiboapp""> About </a>
 				</div>";
-			var urls = Utils.GetAbsoluteUrisFromHtml(new Uri("https://www.fiboapp.com"), html);
-			Assert.AreEqual(3, urls.Count);
-			Assert.AreEqual("http://www.google.com/", urls[0].ToString());
-			Assert.AreEqual("https://www.fiboapp.com/faq", urls[1].ToString());
-			Assert.AreEqual("http://www.bing.com/", urls[2].ToString());
+			var uris = Utils.GetAbsoluteUrisFromHtml(new Uri("https://www.fiboapp.com"), html);
+			Assert.AreEqual(3, uris.Count);
+			Assert.AreEqual("http://www.google.com/", uris[0].ToString());
+			Assert.AreEqual("https://www.fiboapp.com/faq", uris[1].ToString());
+			Assert.AreEqual("http://www.bing.com/", uris[2].ToString());
 		}
 
 		[Test]

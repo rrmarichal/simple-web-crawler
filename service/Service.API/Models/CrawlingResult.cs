@@ -4,7 +4,7 @@ namespace CrawlerService.Models {
 	/// Model a crawling operation on a specific website.
 	/// </summary>
 	public class CrawlingResult {
-
+		
 		/// <summary>
 		/// Error description.
 		/// </summary>

@@ -10,7 +10,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace CrawlerService {
+
 	public class Startup {
+
 		private const string ReactClientCorsOptions = "_react_client_";
 
 		public Startup(IConfiguration configuration) {
@@ -32,7 +34,8 @@ namespace CrawlerService {
 			});
 			// Add business dependencies.
 			services.AddSingleton<IContentProvider, WebContentProvider>();
-			services.AddSingleton<ICrawlerStrategy, DFSCrawler>();
+			services.AddSingleton<ICrawlerStrategy, FaultTolerantCrawler>();
+			// services.AddSingleton<ICrawlerStrategy, DFSCrawler>();
 			// Configure swagger middleware
 			services.AddSwaggerGen(c => {
 				c.SwaggerDoc("v1", new Info {
@@ -71,5 +74,7 @@ namespace CrawlerService {
 				c.SwaggerEndpoint("/swagger/v1/swagger.json", "SwaggerDemo v1");
 			});
 		}
+
 	}
+	
 }

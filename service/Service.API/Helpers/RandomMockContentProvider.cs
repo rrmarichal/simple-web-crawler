@@ -21,7 +21,7 @@ namespace CrawlerService.Helpers {
 			Thread.Sleep(1000 + new Random().Next(2000));
 			return content.ToString();
 		}
-		
-	}
 
+	}
+	
 }

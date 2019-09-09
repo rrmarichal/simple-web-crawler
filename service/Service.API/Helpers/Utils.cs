@@ -18,19 +18,26 @@ namespace CrawlerService.Helpers {
 		/// <summary>
 		/// Use Html Agility Pack library to extract anchor elements from
 		/// the web page.
+		/// Document loading throws errors on empty/invalid documents, in that
+		/// case an empty list is returned.
 		/// </summary>
 		public static List<Uri> GetAbsoluteUrisFromHtml(Uri baseUri, string html) {
-			var uris = new HashSet<Uri>();
-			var doc = new HtmlDocument();
-			doc.LoadHtml(html);
-			var nodes = doc.DocumentNode.SelectNodes("//a[@href]");
-			if (nodes != null) {
-				foreach (var node in nodes) {
-					var href = node.Attributes["href"].Value;
-					uris.Add(GetAbsoluteUriWithPath(baseUri, href));
+			try {
+				var uris = new HashSet<Uri>();
+				var doc = new HtmlDocument();
+				doc.LoadHtml(html);
+				var nodes = doc.DocumentNode.SelectNodes("//a[@href]");
+				if (nodes != null) {
+					foreach (var node in nodes) {
+						var href = node.Attributes["href"].Value;
+						uris.Add(GetAbsoluteUriWithPath(baseUri, href));
+					}
 				}
+				return uris.ToList();
 			}
-			return uris.ToList();
+			catch (Exception) {
+				return new List<Uri>();
+			}
 		}
 
 		/// <summary>
@@ -58,7 +65,7 @@ namespace CrawlerService.Helpers {
 			}
 			return new UriBuilder(uri.Scheme, uri.Host, uri.Port, uri.AbsolutePath).Uri;
 		}
-
+		
 	}
 
 }

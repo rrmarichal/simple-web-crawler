@@ -13,22 +13,42 @@ namespace CrawlerService {
 		private readonly object locker;
 		private List<NodeInfo> children;
 
-		public NodeInfo(Uri uri) {
+		/// <summary>
+		/// Initializes a new instance of the NodeInfo class.
+		/// </summary>
+		/// <param name="uri">System.Uri instance representing this node.</param>
+		/// <param name="depth">The depth of the node in the sitemap as it was first found.</param>
+		public NodeInfo(Uri uri, int depth = 0) {
 			this.uri = uri;
+			Depth = depth;
 			children = new List<NodeInfo>();
 			locker = new object();
 		}
-		
+
+		/// <summary>
+		/// Node URL.
+		/// </summary>
 		public string Url => Utils.GetUriWithPath(uri).ToString();
 
+		/// <summary>
+		/// Node children list.
+		/// </summary>
 		public List<NodeInfo> Children => new List<NodeInfo>(children);
 
-		public void AddChild(NodeInfo child) {
+		internal int Depth { get; }
+
+		internal int Retries { get; private set; }
+
+		internal void AddChild(NodeInfo child) {
 			lock (locker) {
 				children.Add(child);
 			}
 		}
 
-	}
+		internal void AddRetry() {
+			Retries++;
+		}
 
+	}
+	
 }
