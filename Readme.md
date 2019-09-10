@@ -1,4 +1,4 @@
-# Simple web crawler challenge
+# Simple web crawler
 
 Given a URL, it should output a simple textual sitemap, showing the links between pages. The crawler should be limited to one subdomain - so when you start with *https://example.com/*, it would crawl all pages within *example.com*, but not follow external links, for example to facebook.com or blog.example.com.
 
@@ -26,7 +26,7 @@ Depth first search approach, going from the root down in the sitemap tree recurs
 
 ### FaultTolerantCrawler
 
-A curated approach to `DFSCrawler` where we account for error and retries. A queue processor implementation maintains a list of processing tasks limited by a maximum concurrenly level parameter. When a node fails to crawl, it is re-queued up to a maximum number of times.
+A curated approach to `DFSCrawler` where we account for errors and retries. A queue processor implementation maintains a list of processing tasks limited by a maximum concurrenly level parameter. When a node fails to crawl, it is re-queued up to a maximum number of times.
 
 ### Unit Tests
 A test project (<code>Service.Tests</code>) contains:
@@ -52,7 +52,7 @@ cd crawler-service && dotnet run --project Service.API
 
 In order to deliver this implementation on a reasonable time, some trade-offs were made. To make it production-ready, some other details should be addressed:
 
-- Crawler strategy - Fault tolerance
+- Crawler strategy - state management and recovery
 
 	Independently of the strategies implemented to make the crawling process more resource efficient, scenarios like node crash, network outages, should be addressed by providing state management and recovery.
 
