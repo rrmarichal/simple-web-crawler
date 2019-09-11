@@ -47,7 +47,7 @@ namespace CrawlerService.Helpers {
 			processing = 0;
 			paths = new HashSet<string>() { root.AbsolutePath };
 			while (!queue.IsEmpty || processing > 0) {
-				logger.LogInformation($"Queue count: {queue.Count} - Processing: {processing}.");
+				logger.LogInformation($"Queue count: {queue.Count} - Processing: {processing}. Found: {paths.Count}");
 				NodeInfo next;
 				if (processing == concurrencyLevel || !queue.TryDequeue(out next)) {
 					Thread.Sleep(queueIdleTime);
@@ -62,22 +62,36 @@ namespace CrawlerService.Helpers {
 		private async Task CrawlNodeAsync(NodeInfo node) {
 			try {
 				var content = await Task.Run(() => provider.GetHtmlContent(node.Url));
-				EnqueueNodeUrls(node, content);
+				if (string.IsNullOrEmpty(content)) {
+					EnqueueForRetry(node);
+				}
+				else {
+					EnqueueNodeUrls(node, content);
+				}
 			}
 			catch (WebException e) {
 				logger.LogError(e, e.Message);
 				// In production, some tracing should be added to the backlog in order
 				// to provide more context on the overall task execution, i.e., malformed URLs,
 				// timeouts, etc.
-				logger.LogInformation($"Node {node.Url} enqueued for retrial.");
-				// Retry on this node by re-queuing it.
-				node.AddRetry();
-				if (node.Retries < failuresMaxRetries) {
-					queue.Enqueue(node);
-				}
+				EnqueueForRetry(node);
 			}
 			finally {
 				Interlocked.Add(ref processing, -1);
+			}
+		}
+
+		/// <summary>
+		/// Retry on this node by re-queuing it if limit hasn't been reached.
+		/// </summary>
+		private void EnqueueForRetry(NodeInfo node) {
+			node.AddRetry();
+			if (node.Retries < failuresMaxRetries) {
+				queue.Enqueue(node);
+				logger.LogInformation($"Node {node.Url} enqueued for retrial {node.Retries} times.");
+			}
+			else {
+				logger.LogInformation($"Node {node.Url} reached max retries.");
 			}
 		}
 
