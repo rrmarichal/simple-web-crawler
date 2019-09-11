@@ -1,6 +1,7 @@
 using System;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace CrawlerService.Helpers {
 
@@ -22,6 +23,9 @@ namespace CrawlerService.Helpers {
 			return content.ToString();
 		}
 
+		public Task<string> GetHtmlContentAsync(string url) {
+			throw new NotImplementedException();
+		}
 	}
 	
 }

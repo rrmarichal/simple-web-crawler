@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+
 namespace CrawlerService.Helpers {
 
 	/// <summary>
@@ -23,6 +25,9 @@ namespace CrawlerService.Helpers {
 			return null;
 		}
 
+		public Task<string> GetHtmlContentAsync(string url) {
+			throw new System.NotImplementedException();
+		}
 	}
 	
 }
