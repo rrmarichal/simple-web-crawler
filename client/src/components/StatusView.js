@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default ({ loading, error }) => {
+const StatusView = ({ loading, error }) => {
 	if (loading) {
 		return <div className='loading'>Crawling...</div>
 	}
@@ -9,3 +9,5 @@ export default ({ loading, error }) => {
 	}
 	return null
 }
+
+export default StatusView

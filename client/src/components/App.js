@@ -3,7 +3,7 @@ import {
 	AppBar,
 	Toolbar,
 	Typography,
-} from '@material-ui/core'
+} from '@mui/material'
 
 import InputForm from './InputForm'
 import Sitemap from './Sitemap'

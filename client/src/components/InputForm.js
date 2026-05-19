@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import {
 	TextField,
 	Button
-} from '@material-ui/core'
+} from '@mui/material'
 
 export default class InputForm extends React.Component {
 
