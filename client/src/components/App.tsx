@@ -1,23 +1,22 @@
 import React from 'react'
-import {
-	AppBar,
-	Toolbar,
-	Typography,
-} from '@mui/material'
-
+import { AppBar, Toolbar, Typography } from '@mui/material'
 import InputForm from './InputForm'
-import Sitemap from './Sitemap'
+import Sitemap, { SitemapNode } from './Sitemap'
 import StatusView from './StatusView'
 import ApiClient from '../infra/ApiClient'
 
-export default class App extends React.Component {
+interface State {
+	loading: boolean
+	sitemap?: SitemapNode
+	error?: string
+}
 
-	state = { loading: false }
+export default class App extends React.Component<object, State> {
 
-	handleCrawlClicked = async (url, maxDepth) => {
-		// URL validation will happen in the service,
-		// just to keep this as simple as possible.
-		this.setState({ loading: true, sitemap: null })
+	state: State = { loading: false }
+
+	handleCrawlClicked = async (url: string, maxDepth: number) => {
+		this.setState({ loading: true, sitemap: undefined })
 		try {
 			const crawlResponse = await ApiClient.crawl(url, maxDepth)
 			if (crawlResponse.data.error) {
@@ -25,24 +24,19 @@ export default class App extends React.Component {
 					loading: false,
 					error: crawlResponse.data.error
 				})
-			}
-			else {
+			} else {
 				this.setState({
 					loading: false,
-					error: null,
+					error: undefined,
 					sitemap: crawlResponse.data.sitemap
 				})
 			}
-		}
-		catch (err) {
-			// For production ready code, we should trace errors
-			// for monitoring tools, etc.
+		} catch (err) {
 			this.setState({
 				loading: false,
-				error: "An error occurred while retrieving the sitemap."
+				error: 'An error occurred while retrieving the sitemap.'
 			})
 		}
-		
 	}
 
 	render() {

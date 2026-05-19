@@ -1,24 +1,25 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-import {
-	TextField,
-	Button
-} from '@mui/material'
+import { TextField, Button } from '@mui/material'
 
-export default class InputForm extends React.Component {
+interface Props {
+	loading?: boolean
+	onCrawlClicked: (url: string, maxDepth: number) => void
+}
 
-	static propTypes = {
-		loading: PropTypes.bool,
-		onCrawlClicked: PropTypes.func.isRequired
-	}
-	
-	state = { url: '', maxDepth: 0 }
+interface State {
+	url: string
+	maxDepth: number
+}
 
-	handleUrlChanged = event => {
+export default class InputForm extends React.Component<Props, State> {
+
+	state: State = { url: '', maxDepth: 0 }
+
+	handleUrlChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
 		this.setState({ url: event.target.value })
 	}
 
-	handleMaxDepthChanged = event => {
+	handleMaxDepthChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
 		this.setState({ maxDepth: parseInt(event.target.value) })
 	}
 
